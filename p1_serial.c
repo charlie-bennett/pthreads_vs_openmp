@@ -49,6 +49,6 @@ int main(void)
 		time = (stop.tv_sec - start.tv_sec) + (double)(stop.tv_nsec - start.tv_nsec) / 1e9;
 
 		pi = 4 * (double)num_of_points_in_circle / (double)num_of_points;
-		printf("Estimated pi is %f, execution time = %f sec\n",  pi, time);
+		printf("Estimated pi is %f, execution time = %f sec\n With %u threads \n",  pi, time, index);
 	}
 }
