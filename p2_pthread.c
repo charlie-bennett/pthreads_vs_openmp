@@ -35,17 +35,17 @@ struct thread_data
 	int t_end;
 	int t_start;
 
-}
+};
 
 
-void* quickSort_thread(int* threadarg)
+void* quickSort_thread(void* threadarg)
 {
 	struct thread_data* my_data;
 	my_data = (struct thread_data*) threadarg;
 	int my_start = my_data->t_start;
 	int my_end = my_data->t_end;
 	int* my_array = (int*) my_data->t_array;
-	quicksort(my_array, start, end);
+	quickSort(my_array, my_start, my_end);
 	pthread_exit(NULL);
 
 }
@@ -61,7 +61,7 @@ int power(int k)
 }
 int main(void)
 {
-	int i, j, tmp;
+	int i, j, tmp, rc;
 	struct timespec start, stop;
 	struct  thread_data  thread_data_array[NUM_THREADS];
 	pthread_t  threads[NUM_THREADS];
@@ -76,7 +76,6 @@ int main(void)
 
 
 	////////**********Your code goes here***************//
-
 	i = 0;
 	j = num_of_elements - 1;
 	int pivot = m[rand() % num_of_elements];
@@ -95,18 +94,22 @@ int main(void)
 		}
 	}
 
-	if (start < j)
+	if (0 < j)
+	{
 		thread_data_array[0].t_array = m;
-	thread_data_array[0].t_start = 0;
-	thread_data_array[0].t_end = j;
-	rc = pthread_create(&threads[0], NULL, quickSort_thread, (void*) &thread_data_array[0]);
-	if (rc) { printf("ERROR; return code from pthread_create() is %d\n", rc); exit(-1);}
-	if (i < end)
+		thread_data_array[0].t_start = 0;
+		thread_data_array[0].t_end = j;
+		rc = pthread_create(&threads[0], NULL, quickSort_thread, (void*) &thread_data_array[0]);
+		if (rc) { printf("ERROR; return code from pthread_create() is %d\n", rc); exit(-1);}
+	}
+	if (i < num_of_elements - 1)
+	{
 		thread_data_array[1].t_array = m;
-	thread_data_array[1].t_start = i;
-	thread_data_array[1].t_end = num_of_elements - 1;
-	rc = pthread_create(&threads[1], NULL, quickSort_thread, (void*) &thread_data_array[1]);
-	if (rc) { printf("ERROR; return code from pthread_create() is %d\n", rc); exit(-1);}
+		thread_data_array[1].t_start = i;
+		thread_data_array[1].t_end = num_of_elements - 1;
+		rc = pthread_create(&threads[1], NULL, quickSort_thread, (void*) &thread_data_array[1]);
+		if (rc) { printf("ERROR; return code from pthread_create() is %d\n", rc); exit(-1);}
+	}
 
 
 	//printf("i=%d, j=%d\n", i,j);

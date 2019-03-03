@@ -7,15 +7,15 @@ all:
 	gcc -O3 -o p1_omp p1_omp.c -fopenmp
 	gcc -O3 -o p2_pthread p2_pthread.c -lpthread
 
-1: problem2a
+1: p1_omp
 	gcc -O3 -o p1_omp p1_omp.c -fopenmp
 
-2: problem2b
+2: p2_pthread
 	gcc -O3 -o p2_pthread p2_pthread.c -lpthread
 
-p1_omp: problem2a
+run1: p1_omp
 	srun -n1 -c8 ./p1_omp
-p2_pthread: problem2b
+run2: p2_pthread
 	srun -n1 -c8 ./p2_pthread
 run_all: problem2a problem2b
 	srun -n1 -c8 ./p1_omp
