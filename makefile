@@ -4,23 +4,23 @@ LFLAGS +=  -lpthread
 LFLAGS += -fopenmp
 
 all: 
-	gcc -O3 -o problem2a problem2a.c -fopenmp
-	gcc -O3 -o problem2b problem2b.c -lpthread
+	gcc -O3 -o p1_omp p1_omp.c -fopenmp
+	gcc -O3 -o p2_pthread p2_pthread.c -lpthread
 
 1: problem2a
-	gcc -O3 -o problem2a problem2a.c -fopenmp
+	gcc -O3 -o p1_omp p1_omp.c -fopenmp
 
 2: problem2b
-	gcc -O3 -o problem2b problem2b.c -lpthread
+	gcc -O3 -o p2_pthread p2_pthread.c -lpthread
 
-run_2a: problem2a
-	srun -n1 ./problem2a 
-run_2b: problem2b
-	srun -n1 ./problem2b
+p1_omp: problem2a
+	srun -n1 -c8 ./p1_omp
+p2_pthread: problem2b
+	srun -n1 -c8 ./p2_pthread
 run_all: problem2a problem2b
-	srun -n1 -c8 ./problem2a
-	srun -n1 -c8 ./problem2b
+	srun -n1 -c8 ./p1_omp
+	srun -n1 -c8 ./p2_pthread
 
 
 clean: 
-	$(RM) problem2a problem2b 1 
+	$(RM) p1_omp p2_pthread 1 
